@@ -4,6 +4,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Function to render participants in a separate component
+  function renderParticipants(participants) {
+    const participantsContainer = document.getElementById("participants-container");
+    participantsContainer.innerHTML = ""; // Clear previous content
+
+    if (participants.length === 0) {
+      participantsContainer.innerHTML = "<p>No participants yet.</p>";
+      return;
+    }
+
+    participants.forEach((participant) => {
+      const participantItem = document.createElement("div");
+      participantItem.className = "participant-item";
+      participantItem.textContent = participant;
+      participantsContainer.appendChild(participantItem);
+    });
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -25,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
-          <p><strong>Participants:</strong> ${details.participants.length > 0 ? details.participants.join(", ") : "No participants yet"}</p>
+          <button class="view-participants" data-participants='${JSON.stringify(details.participants)}'>View Participants</button>
         `;
 
         activitiesList.appendChild(activityCard);
@@ -35,6 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
         option.value = name;
         option.textContent = name;
         activitySelect.appendChild(option);
+      });
+
+      // Add event listeners for "View Participants" buttons
+      document.querySelectorAll(".view-participants").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const participants = JSON.parse(event.target.dataset.participants);
+          renderParticipants(participants);
+        });
       });
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";

@@ -136,6 +136,23 @@ button:hover {
   display: none;
 }
 
+#participants-container {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.participant-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.participant-item:last-child {
+  border-bottom: none;
+}
+
 footer {
   text-align: center;
   margin-top: 30px;
